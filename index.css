@@ -1,0 +1,16 @@
+
+/* 調整調查員基本資料標籤寬度 */
+table .label {
+  width: 40%;
+}
+
+/* 平均調查員屬性欄位寬度 */
+#character-attributes td {
+  width: 33%;
+}
+
+/* 讓職業特徵的選項變成 inline 且寬度自動，因為使用了 Bootstrap 的 from-select 會讓 select 的寬度變 100% 且是 block */
+#occupation-characteristic {
+  width: auto;
+  display: inline-block;
+}

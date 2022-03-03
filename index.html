@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="zh-TW">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="index.css">
+
+    <title>小山貓的 COC7 調查員產生器</title>
+  </head>
+  <body class="bg-light">
+    <div class="container text-center p-4">
+      <header>
+        <h1>小山貓的 COC7 調查員產生器</h1>
+      </header>
+      <div class="main row p-4">
+        
+        <!-- 調查員基本資料 -->
+        <div class="row p-4">
+          <h2 class="pb-4">調查員基本資料</h2>
+
+          <!-- 調查員出身 -->
+          <div id="character-basic-data" class="col-3">
+            <table class="table table-striped table-bordered align-middle">
+              <thead>
+                <th class="fw-bold fs-5" colspan="2">調查員出身</th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="label">調查員姓名</td>
+                  <td>
+                    <input type="text" id="ch-name" class="form-control text-center w-100">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="label">玩家名稱</td>
+                  <td>
+                    <input type="text" id="ch-pr-name" class="form-control text-center w-100">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="label">職業</td>
+                  <td>
+                    <select name="ch-occupation" id="ch-occupation" class="form-select text-center w-100"></select>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="label">年齡</td>
+                  <td>
+                    <input type="text" id="ch-age" class="form-control text-center w-100" aria-describedby="age-invalid-feedback">
+                    <p id="age-invalid-feedback" class="my-1 invalid-feedback">
+                      請輸入 15 ~ 89 的數字<br>
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="label">性別</td>
+                  <td>
+                    <input type="text" id="ch-sex" class="form-control text-center w-100">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="label">出生地</td>
+                  <td>
+                    <input type="text" id="ch-born" class="form-control text-center w-100">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="label">現居地</td>
+                  <td>
+                    <input type="text" id="ch-living" class="form-control text-center w-100">
+                  </td>
+                </tr>
+
+                <!-- 隨機生成按鈕 -->
+                <!-- <tr>
+                  <td colspan="2"><button type="button" class="btn btn-primary" disabled>隨機生成出身資料</button></td>
+                </tr> -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- 調查員屬性 -->
+          <div id="character-attributes" class="col-6">
+            <table class="table table-striped table-bordered align-middle">
+              <thead>
+                <th class="fw-bold fs-5" colspan="3">調查員屬性</th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <!-- 力量 -->
+                    <table class="table table-bordered align-middle border-dark m-0" id="attribute-str">
+                      <tr>
+                        <th rowspan="2">力量<br>STR</th>
+                        <td rowspan="2" class="value-original">50</td>
+                        <td class="value-hard">25</td>
+                      </tr>
+                      <tr>
+                        <td class="value-extreme">12</td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td>
+                    <!-- 敏捷 -->
+                    <table class="table table-bordered align-middle border-dark m-0" id="attribute-dex">
+                      <tr>
+                        <th rowspan="2">敏捷<br>DEX</th>
+                        <td rowspan="2" class="value-original">50</td>
+                        <td class="value-hard">25</td>
+                      </tr>
+                      <tr>
+                        <td class="value-extreme">12</td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td>
+                    <!-- 智力 -->
+                    <table class="table table-bordered align-middle border-dark m-0" id="attribute-int">
+                      <tr>
+                        <th rowspan="2">智力<br>INT</th>
+                        <td rowspan="2" class="value-original">50</td>
+                        <td class="value-hard">25</td>
+                      </tr>
+                      <tr>
+                        <td class="value-extreme">12</td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <!-- 體質 -->
+                    <table class="table table-bordered align-middle border-dark m-0" id="attribute-con">
+                      <tr>
+                        <th rowspan="2">體質<br>CON</th>
+                        <td rowspan="2" class="value-original">50</td>
+                        <td class="value-hard">25</td>
+                      </tr>
+                      <tr>
+                        <td class="value-extreme">12</td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td>
+                    <!-- 外貌 -->
+                    <table class="table table-bordered align-middle border-dark m-0" id="attribute-app">
+                      <tr>
+                        <th rowspan="2">外貌<br>APP</th>
+                        <td rowspan="2" class="value-original">50</td>
+                        <td class="value-hard">25</td>
+                      </tr>
+                      <tr>
+                        <td class="value-extreme">12</td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td>
+                    <!-- 意志 -->
+                    <table class="table table-bordered align-middle border-dark m-0" id="attribute-pow">
+                      <tr>
+                        <th rowspan="2">意志<br>POW</th>
+                        <td rowspan="2" class="value-original">50</td>
+                        <td class="value-hard">25</td>
+                      </tr>
+                      <tr>
+                        <td class="value-extreme">12</td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <!-- 體型 -->
+                    <table class="table table-bordered align-middle border-dark m-0" id="attribute-siz">
+                      <tr>
+                        <th rowspan="2">體型<br>SIZ</th>
+                        <td rowspan="2" class="value-original">50</td>
+                        <td class="value-hard">25</td>
+                      </tr>
+                      <tr>
+                        <td class="value-extreme">12</td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td>
+                    <!-- 教育 -->
+                    <table class="table table-bordered align-middle border-dark m-0" id="attribute-edu">
+                      <tr>
+                        <th rowspan="2">教育<br>EDU</th>
+                        <td rowspan="2" class="value-original">50</td>
+                        <td class="value-hard">25</td>
+                      </tr>
+                      <tr>
+                        <td class="value-extreme">12</td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td>
+                    <!-- 機動力 -->
+                    <table class="table table-bordered align-middle border-dark m-0">
+                      <tr>
+                        <th >機動<br>MOV</th>
+                        <td id="attribute-mov" class="value-original">7</td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+
+                <!-- 隨機生成按鈕 -->
+                <tr>
+                  <td colspan="3">
+                    <button type="button" class="btn btn-primary" id="generate-attributes">隨機生成屬性值</button>
+                    <div id="age-adjust-msg" class="alert alert-warning my-2" role="alert" hidden>
+                      <h5>年齡調整</h5>
+                      <p id="age-adjust-rule" class="my-1">15 ~ 19 歲：力量與體型合計 -5、教育 -5、幸運值兩次取高</p>
+                      <p class="my-1">(各屬性值在調整時，會確保數值在 15 ~ 99 範圍內)</p>
+                      <hr>
+                      <p id="age-adjust-log" class="my-1">調整紀錄</p>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <div id="character-status" class="col-3">
+            <table class="table table-striped table-bordered align-middle">
+              <thead>
+                <th class="fw-bold fs-5" colspan="2">調查員狀態</th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="label">HP 上限</td>
+                  <td id="status-hp">(SIZ + CON) / 10</td>
+                </tr>
+                <tr>
+                  <td class="label">MP 上限</td>
+                  <td id="status-mp">POW / 5</td>
+                </tr>
+                <tr>
+                  <td class="label">理智 (SAN) 初始值</td>
+                  <td id="status-san">POW</td>
+                </tr>
+                <tr>
+                  <td class="label">幸運值 (LUK)</td>
+                  <td id="status-luk">3d6 x 5</td>
+                </tr>
+                <tr>
+                  <td class="label">傷害加成 (DB)</td>
+                  <td id="status-db">(STR + SIZ) 決定</td>
+                </tr>
+                <tr>
+                  <td class="label">體格 (Build)</td>
+                  <td id="status-build">(STR + SIZ) 決定</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 調查員技能 -->
+        <div class="row p-4">
+          <h2 class="p-4">調查員技能</h2>
+
+          <p class="fs-4">
+            職業點數：<select name="occupation-characteristic" id="occupation-characteristic" class="form-select text-center">
+              <option value="edu" selected>EDU x 4</option>
+            </select> = <span id="occupation-skill-points">100</span>、
+            興趣點數：<span id="interest-skill-points">100</span>
+          </p>
+          
+          <div class="mb-4">
+            <button type="button" class="btn btn-primary" id="distribute-skill-points">隨機分配技能點數</button>
+          </div>
+
+          <div id="skill-col-1" class="col-4">
+            <table class="table table-striped table-bordered align-middle">
+              <thead>
+                <tr>
+                  <th>技能名稱</th>
+                  <th>初始</th>
+                  <th>職業</th>
+                  <th>興趣</th>
+                  <th>總和</th>
+                </tr>
+              </thead>
+              <tbody id="skill-row-body-1">
+                <!-- 範例欄位 -->
+                <!-- <tr>
+                  <th>會計</th>
+                  <td>5</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>
+                    <table class="table align-middle table-bordered border-dark m-0">
+                      <tr>
+                        <td rowspan="2">10</td>
+                        <td>5</td>
+                      </tr>
+                      <tr>
+                        <td>2</td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr> -->
+              </tbody>
+            </table>
+          </div>
+
+          <div id="skill-col-2" class="col-4">
+            <table class="table table-striped table-bordered align-middle">
+              <thead>
+                <tr>
+                  <th>技能名稱</th>
+                  <th>初始</th>
+                  <th>職業</th>
+                  <th>興趣</th>
+                  <th>總和</th>
+                </tr>
+              </thead>
+              <tbody id="skill-row-body-2">
+              </tbody>
+            </table>
+          </div>
+
+          <div id="skill-col-3" class="col-4">
+            <table class="table table-striped table-bordered align-middle">
+              <thead>
+                <tr>
+                  <th>技能名稱</th>
+                  <th>初始</th>
+                  <th>職業</th>
+                  <th>興趣</th>
+                  <th>總和</th>
+                </tr>
+              </thead>
+              <tbody id="skill-row-body-3">
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+
+
+    <!-- Bootstrap Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <!-- My Scripts -->
+    <script src="skill-data.js"></script>
+    <script src="occupations.js"></script>
+    <script src="age-adjust.js"></script>
+    <script src="index.js"></script>
+  </body>
+</html>
