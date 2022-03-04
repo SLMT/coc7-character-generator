@@ -44,6 +44,8 @@ function initSkillList() {
 
 function registerCallbacks() {
   $("#generate-attributes").click(generateAttributes);
+  $("#occupation-characteristic").change(updateOccupationSkillPoints);
+  $("#ch-occupation").change(onOccupationChange);
 }
 
 // 隨機生成屬性值與更新狀態
@@ -322,13 +324,43 @@ function adjustStatus(lukTimes, movAdjust) {
 
 function updateSkillPoints() {
   // 部分技能初始值是根據屬性值決定
-  var dexVal = getAttributeValue("dex");
   var eduVal = getAttributeValue("edu");
+  var dexVal = getAttributeValue("dex");
   $("#skill-dodge .init-value").text(Math.floor(dexVal / 2));
   $("#skill-language-own .init-value").text(eduVal);
 
   // 決定技能點數
+  updateOccupationSkillPoints();
   var intVal = getAttributeValue("int");
-  $("#occupation-skill-points").text(eduVal * 4);
   $("#interest-skill-points").text(intVal * 2);
+}
+
+// 決定職業技能點數
+function updateOccupationSkillPoints() {
+  var chName = $("#occupation-characteristic").val();
+  var chVal = getAttributeValue(chName);
+  var eduVal = getAttributeValue("edu");
+  $("#occupation-skill-points").text(eduVal * 2 + chVal * 2);
+}
+
+function onOccupationChange() {
+  var occupationName = $("#ch-occupation").val();
+  var occupation = findOccupation(occupationName);
+
+  // 更新職業特徵
+  $('#occupation-characteristic option').map((index, option) => {
+    if (occupation["skillChar"].includes(option.value)) {
+      option.prop("hidden", false);
+    } else {
+      option.prop("hidden", true);
+    }
+  });
+}
+
+function findOccupation(name) {
+  for (var i = 0; i < occupations.length; i++) {
+    if (occupations[i]["name"] == name) {
+      return occupations[i];
+    }
+  }
 }
