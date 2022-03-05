@@ -348,11 +348,19 @@ function onOccupationChange() {
   var occupation = findOccupation(occupationName);
 
   // 更新職業特徵
-  $('#occupation-characteristic option').map((index, option) => {
-    if (occupation["skillChar"].includes(option.value)) {
-      option.prop("hidden", false);
+  var setSelected = false;
+  $('#occupation-characteristic option').each(function() {
+    if (occupation["skillChar"].includes($(this).val())) {
+      $(this).prop("hidden", false);
+      if (!setSelected) {
+        $(this).prop("selected", true);
+        setSelected = true;
+      } else {
+        $(this).prop("selected", false);
+      }
     } else {
-      option.prop("hidden", true);
+      $(this).prop("hidden", true);
+      $(this).prop("selected", false);
     }
   });
 }
