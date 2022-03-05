@@ -3,6 +3,7 @@ $(document).ready(function() {
   initOccupationsSelect();
   initSkillList();
   registerCallbacks();
+  onOccupationChange();
 });
 
 function initOccupationsSelect() {
@@ -17,19 +18,19 @@ function initSkillList() {
 
   skills.forEach((skill, index) => {
     // 建立欄位字串
-    var skillRow = `<tr id="skill-${skill["name"]}">
+    var skillRow = `<tr id="skill-${skill["name"]}" class="skill-row">
       <th>${skill["nameCh"]}</th>
       <td class="init-value">${skill["initValue"]}</td>
-      <td></td>
-      <td></td>
+      <td class="occupation-value"></td>
+      <td class="interest-value"></td>
       <td>
         <table class="table align-middle table-bordered border-dark m-0">
           <tr>
-            <td rowspan="2"></td>
-            <td></td>
+            <td rowspan="2" class="total-value"></td>
+            <td class="one-second-value"></td>
           </tr>
           <tr>
-            <td></td>
+            <td class="one-fifth-value"></td>
           </tr>
         </table>
       </td>
@@ -46,6 +47,7 @@ function registerCallbacks() {
   $("#generate-attributes").click(generateAttributes);
   $("#occupation-characteristic").change(updateOccupationSkillPoints);
   $("#ch-occupation").change(onOccupationChange);
+  $("#distribute-skill-points").click(onClickDistriSkillPointButton);
 }
 
 // 隨機生成屬性值與更新狀態
@@ -344,8 +346,7 @@ function updateOccupationSkillPoints() {
 }
 
 function onOccupationChange() {
-  var occupationName = $("#ch-occupation").val();
-  var occupation = findOccupation(occupationName);
+  var occupation = getSelectedOccupation();
 
   // 更新職業特徵
   var setSelected = false;
@@ -363,12 +364,192 @@ function onOccupationChange() {
       $(this).prop("selected", false);
     }
   });
+
+  // 重新計算技能點數
+  updateOccupationSkillPoints();
 }
 
-function findOccupation(name) {
+function getSelectedOccupation() {
+  var occupationName = $("#ch-occupation").val();
   for (var i = 0; i < occupations.length; i++) {
-    if (occupations[i]["name"] == name) {
+    if (occupations[i]["name"] == occupationName) {
       return occupations[i];
     }
   }
+}
+
+function onClickDistriSkillPointButton() {
+  // 重設技能表
+  resetSkillTable();
+
+  // 分配技能點數
+  distributeOccupationSkillPoints();
+  distributeInterestSkillPoints();
+
+  // 統計各技能點數
+  updateSkillValues();
+}
+
+function distributeOccupationSkillPoints() {
+  // 取得職業技能點數
+  var skillPointText = $("#occupation-skill-points").text();
+  var allSkillPoint = parseInt(skillPointText);
+
+  // 確認要分配的技能
+  var occupation = getSelectedOccupation();
+  var skillSet = [];
+  for (var i = 0; i < occupation["skills"].length; i++) {
+    var skillName = occupation["skills"][i];
+    if (skillName == "*") {
+      var skillName = selectSkillRandomly();
+      while (skillSet.includes(skillName)) {
+        skillName = selectSkillRandomly();
+      }
+    }
+    skillSet.push(skillName);
+  }
+
+  // 確認各技能能分配的點數上限
+  var availablePoints = {};
+  for (var i = 0; i < skillSet.length; i++) {
+    var initVal = getSkillInitValue(skillSet[i]);
+    availablePoints[skillSet[i]] = 99 - initVal;
+  }
+
+  // 先分配信用評級點數
+  var creditRange = occupation["creditMax"] - occupation["creditMin"] + 1;
+  var credit = randomInt(creditRange) + occupation["creditMin"] - 1;
+  $("#skill-credit-rating .occupation-value").text(credit);
+
+  // 分配其他技能點數
+  var skillPoints = distributeSkillPoints(allSkillPoint - credit, skillSet, availablePoints);
+
+  // 填入技能點數到技能表
+  for (var i = 0; i < skillSet.length; i++) {
+    var skillName = skillSet[i];
+    var skillPoint = skillPoints[skillName];
+    $(`#skill-${skillName} .occupation-value`).text(skillPoint);
+  }
+}
+
+function distributeInterestSkillPoints() {
+  // 取得興趣技能點數
+  var skillPointText = $("#interest-skill-points").text();
+  var allSkillPoint = parseInt(skillPointText);
+
+  // 確認要分配的技能
+  // 這邊我們限定隨機挑選五個技能
+  var skillSet = [];
+  for (var i = 0; i < 5; i++) {
+    var skillName = selectSkillRandomly();
+    while (skillSet.includes(skillName)) {
+      skillName = selectSkillRandomly();
+    }
+    skillSet.push(skillName);
+  }
+
+  // 確認各技能能分配的點數上限
+  var availablePoints = {};
+  for (var i = 0; i < skillSet.length; i++) {
+    var initVal = getSkillInitValue(skillSet[i]);
+    var occpVal = getSkillOccupationValue(skillSet[i]);
+    availablePoints[skillSet[i]] = 99 - initVal - occpVal;
+  }
+
+  // 分配其他技能點數
+  var skillPoints = distributeSkillPoints(allSkillPoint, skillSet, availablePoints);
+
+  // 填入技能點數到技能表
+  for (var i = 0; i < skillSet.length; i++) {
+    var skillName = skillSet[i];
+    var skillPoint = skillPoints[skillName];
+    $(`#skill-${skillName} .interest-value`).text(skillPoint);
+  }
+}
+
+function distributeSkillPoints(maxPoint, skillSet, availablePoints) {
+  var leftSkillPoint = maxPoint;
+
+  // 初始化 skill point 分配表
+  var skillPoints = {};
+  for (var i = 0; i < skillSet.length; i++) {
+    skillPoints[skillSet[i]] = 0;
+  }
+  
+  // 隨機分配點數
+  while (leftSkillPoint > 0) {
+    // 一次最多 10 點慢慢加上去，讓技能點數能較為平均地分配
+    var randomSkillIdx = randomInt(skillSet.length) - 1;
+    var skillName = skillSet[randomSkillIdx];
+    var skillPoint = randomInt(11) - 1;
+    if (skillPoint > availablePoints[skillName]) {
+      skillPoint = availablePoints[skillName];
+    }
+    if (skillPoint > leftSkillPoint) {
+      skillPoint = leftSkillPoint;
+    }
+    skillPoints[skillName] += skillPoint;
+    leftSkillPoint -= skillPoint;
+  }
+
+  return skillPoints;
+}
+
+function selectSkillRandomly() {
+  var idx = randomInt(skills.length);
+
+  // 排除部分不能分配點數的技能
+  var excludedList = [
+    "art-and-craft", // 需要指定子分類
+    "credit-rating", // 信用評級會另外處理
+    "cthulhu-mythos", // 克蘇魯神話不能配點
+    "language", // 需要指定子分類
+    "pilot", // 需要指定子分類
+    "science", // 需要指定子分類
+    "survival" // 需要指定子分類
+  ];
+  while (excludedList.includes(skills[idx].name)) {
+    idx = randomInt(skills.length);
+  }
+
+  return skills[idx].name;
+}
+
+function getSkillInitValue(name) {
+  var valText = $(`#skill-${name} .init-value`).text();
+  return parseInt(valText);
+}
+
+function getSkillOccupationValue(name) {
+  var valText = $(`#skill-${name} .occupation-value`).text();
+  return parseInt(valText);
+}
+
+function resetSkillTable() {
+  $(".occupation-value").each(function( index, value ) {
+    $(this).text(""); 
+  });
+  $(".interest-value").each(function( index, value ) {
+    $(this).text(""); 
+  });
+}
+
+function updateSkillValues() {
+  $(".skill-row").each(function( index, value ) {
+    var initVal = parseInt($(this).find(".init-value").text());
+    var occuVal = parseInt($(this).find(".occupation-value").text());
+    var interestVal = parseInt($(this).find(".interest-value").text());
+
+    if (isNaN(occuVal)) {
+      occuVal = 0;
+    }
+    if (isNaN(interestVal)) {
+      interestVal = 0;
+    }
+
+    var totalVal = initVal + occuVal + interestVal;
+    $(this).find(".total-value").text(totalVal);
+    $(this).find(".one-second-value").text(Math.floor(totalVal / 2));
+    $(this).find(".one-fifth-value").text(Math.floor(totalVal / 5));
+  });
 }
