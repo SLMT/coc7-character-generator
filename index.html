@@ -18,10 +18,21 @@
       <header>
         <h1>小山貓的 COC7 調查員產生器</h1>
       </header>
-      <div class="main row p-4">
+
+      <div class="my-4">
+        <h3>操作流程</h3>
+        <div class="d-flex flex-column flex-md-row justify-content-center">
+          <p class="bg-white p-2 m-2 border border-dark rounded">1) 填寫調查員出身資料</p>
+          <p class="bg-white p-2 m-2 border border-dark rounded">2) 按下「隨機生成屬性值」按鈕</p>
+          <p class="bg-white p-2 m-2 border border-dark rounded">3) 選擇職業點數分配方式</p>
+          <p class="bg-white p-2 m-2 border border-dark rounded">4) 按下「隨機分配技能點數」按鈕</p>
+        </div>
+      </div>
+
+      <div class="main row">
         
         <!-- 調查員基本資料 -->
-        <div class="row p-4">
+        <div class="row m-2">
           <h2 class="pb-4">調查員基本資料</h2>
 
           <!-- 調查員出身 -->
@@ -92,6 +103,13 @@
                 <th class="fw-bold fs-5">調查員屬性</th>
               </thead>
               <tbody>
+                <!-- 隨機生成按鈕 -->
+                <tr>
+                  <td>
+                    <button type="button" class="btn btn-primary" id="generate-attributes">隨機生成屬性值</button>
+                  </td>
+                </tr>
+
                 <tr>
                   <td>
                     <div class="row">
@@ -100,11 +118,11 @@
                         <table class="table table-bordered align-middle border-dark my-2" id="attribute-str">
                           <tr>
                             <th rowspan="2">力量<br>STR</th>
-                            <td rowspan="2" class="value-original">50</td>
-                            <td class="value-hard">25</td>
+                            <td rowspan="2" class="value-original"></td>
+                            <td class="value-hard"></td>
                           </tr>
                           <tr>
-                            <td class="value-extreme">12</td>
+                            <td class="value-extreme"></td>
                           </tr>
                         </table>
                       </div>
@@ -114,11 +132,11 @@
                         <table class="table table-bordered align-middle border-dark my-2" id="attribute-dex">
                           <tr>
                             <th rowspan="2">敏捷<br>DEX</th>
-                            <td rowspan="2" class="value-original">50</td>
-                            <td class="value-hard">25</td>
+                            <td rowspan="2" class="value-original"></td>
+                            <td class="value-hard"></td>
                           </tr>
                           <tr>
-                            <td class="value-extreme">12</td>
+                            <td class="value-extreme"></td>
                           </tr>
                         </table>
                       </div>
@@ -128,11 +146,11 @@
                         <table class="table table-bordered align-middle border-dark my-2" id="attribute-int">
                           <tr>
                             <th rowspan="2">智力<br>INT</th>
-                            <td rowspan="2" class="value-original">50</td>
-                            <td class="value-hard">25</td>
+                            <td rowspan="2" class="value-original"></td>
+                            <td class="value-hard"></td>
                           </tr>
                           <tr>
-                            <td class="value-extreme">12</td>
+                            <td class="value-extreme"></td>
                           </tr>
                         </table>
                       </div>
@@ -142,11 +160,11 @@
                         <table class="table table-bordered align-middle border-dark my-2" id="attribute-con">
                           <tr>
                             <th rowspan="2">體質<br>CON</th>
-                            <td rowspan="2" class="value-original">50</td>
-                            <td class="value-hard">25</td>
+                            <td rowspan="2" class="value-original"></td>
+                            <td class="value-hard"></td>
                           </tr>
                           <tr>
-                            <td class="value-extreme">12</td>
+                            <td class="value-extreme"></td>
                           </tr>
                         </table>
                       </div>
@@ -156,11 +174,11 @@
                         <table class="table table-bordered align-middle border-dark my-2" id="attribute-app">
                           <tr>
                             <th rowspan="2">外貌<br>APP</th>
-                            <td rowspan="2" class="value-original">50</td>
-                            <td class="value-hard">25</td>
+                            <td rowspan="2" class="value-original"></td>
+                            <td class="value-hard"></td>
                           </tr>
                           <tr>
-                            <td class="value-extreme">12</td>
+                            <td class="value-extreme"></td>
                           </tr>
                         </table>
                       </div>
@@ -170,11 +188,11 @@
                         <table class="table table-bordered align-middle border-dark my-2" id="attribute-pow">
                           <tr>
                             <th rowspan="2">意志<br>POW</th>
-                            <td rowspan="2" class="value-original">50</td>
-                            <td class="value-hard">25</td>
+                            <td rowspan="2" class="value-original"></td>
+                            <td class="value-hard"></td>
                           </tr>
                           <tr>
-                            <td class="value-extreme">12</td>
+                            <td class="value-extreme"></td>
                           </tr>
                         </table>
                       </div>
@@ -184,11 +202,11 @@
                         <table class="table table-bordered align-middle border-dark my-2" id="attribute-siz">
                           <tr>
                             <th rowspan="2">體型<br>SIZ</th>
-                            <td rowspan="2" class="value-original">50</td>
-                            <td class="value-hard">25</td>
+                            <td rowspan="2" class="value-original"></td>
+                            <td class="value-hard"></td>
                           </tr>
                           <tr>
-                            <td class="value-extreme">12</td>
+                            <td class="value-extreme"></td>
                           </tr>
                         </table>
                       </div>
@@ -198,11 +216,11 @@
                         <table class="table table-bordered align-middle border-dark my-2" id="attribute-edu">
                           <tr>
                             <th rowspan="2">教育<br>EDU</th>
-                            <td rowspan="2" class="value-original">50</td>
-                            <td class="value-hard">25</td>
+                            <td rowspan="2" class="value-original"></td>
+                            <td class="value-hard"></td>
                           </tr>
                           <tr>
-                            <td class="value-extreme">12</td>
+                            <td class="value-extreme"></td>
                           </tr>
                         </table>
                       </div>
@@ -212,19 +230,17 @@
                         <table class="table table-bordered align-middle border-dark my-2">
                           <tr>
                             <th >機動<br>MOV</th>
-                            <td id="attribute-mov" class="value-original">7</td>
+                            <td id="attribute-mov" class="value-original"></td>
                           </tr>
                         </table>
                       </div>
                     </div>
                   </td>
                 </tr>
-                
-                <!-- 隨機生成按鈕 -->
+
                 <tr>
-                  <td>
-                    <button type="button" class="btn btn-primary" id="generate-attributes">隨機生成屬性值</button>
-                    <div id="age-adjust-msg" class="alert alert-warning my-2" role="alert" hidden>
+                  <td class="p-0">
+                    <div id="age-adjust-msg" class="alert alert-warning m-2" role="alert" hidden>
                       <h5>年齡調整</h5>
                       <p id="age-adjust-rule" class="my-1">15 ~ 19 歲：力量與體型合計 -5、教育 -5、幸運值兩次取高</p>
                       <p class="my-1">(各屬性值在調整時，會確保數值在 15 ~ 99 範圍內)</p>
