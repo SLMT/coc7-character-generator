@@ -44,14 +44,14 @@ function initSkillList() {
 }
 
 function registerCallbacks() {
-  $("#generate-attributes").click(generateAttributes);
+  $("#generate-attributes").click(onClickGenerateAttributeButton);
   $("#occupation-characteristic").change(updateOccupationSkillPoints);
   $("#ch-occupation").change(onOccupationChange);
   $("#distribute-skill-points").click(onClickDistriSkillPointButton);
 }
 
 // 隨機生成屬性值與更新狀態
-function generateAttributes() {
+function onClickGenerateAttributeButton() {
   var age = getAge();
   if (age == -1) {
     return;
@@ -342,7 +342,14 @@ function updateOccupationSkillPoints() {
   var chName = $("#occupation-characteristic").val();
   var chVal = getAttributeValue(chName);
   var eduVal = getAttributeValue("edu");
-  $("#occupation-skill-points").text(eduVal * 2 + chVal * 2);
+  var skillPoints = eduVal * 2 + chVal * 2;
+  if (isNaN(skillPoints)) {
+    $("#occupation-skill-points").text("尚未計算");
+    $("#distribute-skill-points").prop("disabled", true);
+  } else {
+    $("#occupation-skill-points").text(skillPoints);
+    $("#distribute-skill-points").prop("disabled", false);
+  }
 }
 
 function onOccupationChange() {
